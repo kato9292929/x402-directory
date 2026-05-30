@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TOP_SELLERS, CATEGORIES, JAPAN_PRODUCTS } from "@/lib/data";
+import {
+  TOP_SELLERS,
+  CATEGORIES,
+  JAPAN_PRODUCTS,
+  ECOSYSTEM_STATS,
+} from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -7,12 +12,17 @@ export async function GET(_req: NextRequest) {
   const payload = {
     x402_version: 1,
     description: "x402 Ecosystem Directory — comprehensive structured data",
+    source: "x402scan",
+    period: "past_30_days",
+    ecosystem_stats: ECOSYSTEM_STATS,
     top_sellers: TOP_SELLERS.map((s) => ({
       rank: s.rank,
       name: s.name,
-      revenue_30d: s.revenue30d,
-      calls_30d: s.calls30d,
-      avg_price: s.avgPrice,
+      domain: s.domain,
+      volume_30d: s.volume30d,
+      txns_30d: s.txns30d,
+      buyers_30d: s.buyers30d,
+      chains: s.chains,
       category: s.category,
     })),
     categories: Object.fromEntries(
@@ -20,11 +30,13 @@ export async function GET(_req: NextRequest) {
         cat.id,
         cat.products.map((p) => ({
           name: p.name,
+          domain: p.domain,
           url: p.url,
           description: p.description,
-          endpoints: p.endpoints,
-          price_range: p.priceRange,
-          region: p.region,
+          volume_30d: p.volume30d,
+          txns_30d: p.txns30d,
+          buyers_30d: p.buyers30d,
+          chains: p.chains,
           tags: p.tags,
         })),
       ])

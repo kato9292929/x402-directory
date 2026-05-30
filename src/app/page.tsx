@@ -1,4 +1,4 @@
-import { TOP_SELLERS, CATEGORIES } from "@/lib/data";
+import { TOP_SELLERS, CATEGORIES, ECOSYSTEM_STATS } from "@/lib/data";
 
 export default function HomePage() {
   return (
@@ -28,20 +28,20 @@ export default function HomePage() {
 
           <div className="stats-bar">
             <div className="stat-item">
-              <div className="stat-value">$48K+</div>
-              <div className="stat-label">30日間収益 (Top 8)</div>
+              <div className="stat-value">{ECOSYSTEM_STATS.transactions}</div>
+              <div className="stat-label">30日間トランザクション数</div>
             </div>
             <div className="stat-item">
-              <div className="stat-value">316K+</div>
-              <div className="stat-label">30日間APIコール数</div>
+              <div className="stat-value">{ECOSYSTEM_STATS.volume}</div>
+              <div className="stat-label">30日間取引量 (USDC)</div>
             </div>
             <div className="stat-item">
-              <div className="stat-value">8453</div>
-              <div className="stat-label">Base Mainnet Chain ID</div>
+              <div className="stat-value">{ECOSYSTEM_STATS.buyers}</div>
+              <div className="stat-label">30日間 購入者数</div>
             </div>
             <div className="stat-item">
-              <div className="stat-value">$0.01</div>
-              <div className="stat-label">このAPIの価格/call</div>
+              <div className="stat-value">{ECOSYSTEM_STATS.sellers}</div>
+              <div className="stat-label">30日間 販売者数</div>
             </div>
           </div>
         </div>
@@ -162,12 +162,12 @@ export default function HomePage() {
                   <div key={product.name} className="card">
                     <div className="card-header">
                       <div className="card-title">{product.name}</div>
-                      <span className="card-badge">{product.region}</span>
+                      <span className="card-badge">{product.chains[0]}</span>
                     </div>
                     <p className="card-desc">{product.description}</p>
                     <div className="card-meta">
-                      <span>📡 {product.endpoints} endpoints</span>
-                      <span>💰 {product.priceRange}</span>
+                      <span>🔁 {product.txns30d} txns</span>
+                      <span>👥 {product.buyers30d.toLocaleString()} buyers</span>
                     </div>
                     <div className="tag-list">
                       {product.tags.map((tag) => (
@@ -175,6 +175,16 @@ export default function HomePage() {
                           {tag}
                         </span>
                       ))}
+                    </div>
+                    <div style={{ marginTop: "12px" }}>
+                      <a
+                        href={product.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: "0.8rem" }}
+                      >
+                        {product.domain} →
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -191,7 +201,7 @@ export default function HomePage() {
             <div className="section-eyebrow">x402scan データ</div>
             <h2 className="section-title">Top Sellers 分析</h2>
             <p className="section-desc">
-              過去30日間の収益・コール数ランキング（x402scanデータ）
+              過去30日間の取引量・トランザクション数ランキング（x402scan Featured Services）
             </p>
           </div>
 
@@ -200,11 +210,11 @@ export default function HomePage() {
               <thead>
                 <tr>
                   <th>Rank</th>
-                  <th>プロダクト</th>
-                  <th>カテゴリ</th>
-                  <th>30日収益</th>
-                  <th>30日コール数</th>
-                  <th>平均単価</th>
+                  <th>サービス</th>
+                  <th>取引量</th>
+                  <th>トランザクション</th>
+                  <th>購入者</th>
+                  <th>チェーン</th>
                 </tr>
               </thead>
               <tbody>
@@ -217,16 +227,27 @@ export default function HomePage() {
                         {seller.rank}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 500 }}>{seller.name}</td>
+                    <td style={{ fontWeight: 500 }}>
+                      {seller.name}
+                      <div
+                        style={{
+                          fontSize: "0.72rem",
+                          color: "var(--text-muted)",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {seller.domain}
+                      </div>
+                    </td>
+                    <td className="revenue">{seller.volume30d}</td>
+                    <td style={{ color: "var(--text-muted)" }}>
+                      {seller.txns30d}
+                    </td>
+                    <td style={{ color: "var(--text-muted)" }}>
+                      {seller.buyers30d.toLocaleString()}
+                    </td>
                     <td>
-                      <span className="tag">{seller.category}</span>
-                    </td>
-                    <td className="revenue">{seller.revenue30d}</td>
-                    <td style={{ color: "var(--text-muted)" }}>
-                      {seller.calls30d.toLocaleString()}
-                    </td>
-                    <td style={{ color: "var(--text-muted)" }}>
-                      {seller.avgPrice}
+                      <span className="tag">{seller.chains.join(" / ")}</span>
                     </td>
                   </tr>
                 ))}
@@ -332,7 +353,7 @@ export default function HomePage() {
             </div>
             <p className="api-info-desc">
               x402エコシステムをキーワード検索します。クエリパラメータ: <code>q</code>（検索ワード）、
-              <code>category</code>（フィルタ: crypto_data / apac_data / defi / security）
+              <code>category</code>（フィルタ: data_web / ai_gateway / defi_intel / commerce / apac）
             </p>
           </div>
 

@@ -30,10 +30,13 @@ export async function GET(req: NextRequest) {
   const matchedProducts: Array<{
     category: string;
     name: string;
+    domain: string;
     url: string;
     description: string;
-    endpoints: number;
-    price_range: string;
+    volume_30d: string;
+    txns_30d: string;
+    buyers_30d: number;
+    chains: string[];
     tags: string[];
   }> = [];
 
@@ -45,15 +48,20 @@ export async function GET(req: NextRequest) {
         " " +
         normalize(product.description) +
         " " +
+        normalize(product.domain) +
+        " " +
         product.tags.join(" ");
       if (searchTarget.includes(query)) {
         matchedProducts.push({
           category: cat.id,
           name: product.name,
+          domain: product.domain,
           url: product.url,
           description: product.description,
-          endpoints: product.endpoints,
-          price_range: product.priceRange,
+          volume_30d: product.volume30d,
+          txns_30d: product.txns30d,
+          buyers_30d: product.buyers30d,
+          chains: product.chains,
           tags: product.tags,
         });
       }
