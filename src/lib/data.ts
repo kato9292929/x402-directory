@@ -161,6 +161,22 @@ export const CATEGORIES: EcosystemCategory[] = [
     ],
   },
   {
+    id: "latam_data",
+    label: "LATAM・中南米データ",
+    description: "ラテンアメリカ特化の公式データAPI",
+    products: [
+      {
+        name: "Colombia TRM",
+        url: "https://x402.lagaceta.net/trm",
+        description: "Official Colombian USD/COP TRM from Superintendencia Financiera via datos.gov.co.",
+        endpoints: 1,
+        priceRange: "$0.005",
+        region: "Colombia/LATAM",
+        tags: ["colombia", "trm", "fx", "cop", "usd"],
+      },
+    ],
+  },
+  {
     id: "defi",
     label: "DeFi・プロトコル",
     description: "DeFiプロトコルデータ・イールド情報・流動性分析",
